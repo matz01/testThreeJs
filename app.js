@@ -18,7 +18,7 @@ function setThreeScene(){
 
 function addParticle(){
   particle = new Particle(new THREE.Vector3( -150, -150, -150 ));
-  particle.accellerate(new THREE.Vector3( 10, 0, 0 ));
+  particle.accellerate(new THREE.Vector3( 1, 2, 0 ));
   particle.display()
 }
 
@@ -32,8 +32,7 @@ function animate(){
 function gravity(){
   let distanceFromCenter = particle.sphere.position.distanceTo( new THREE.Vector3(0,0,0) );
   let spaceBetween = new THREE.Vector3(0,0,0).sub( particle.sphere.position );
-  console.log(distanceFromCenter)
-  return spaceBetween.divideScalar(200)
+  return spaceBetween.divideScalar(Math.pow(distanceFromCenter,2)).multiplyScalar(10)
 }
 
 function render () {

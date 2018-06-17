@@ -1,13 +1,13 @@
+var particle
 
 function onLoadHandler () {
-  console.log('zz')
   setThreeScene()
   addParticle()
   animate()
 }
 
 function setThreeScene(){
-  window.renderer = new THREE.WebGLRenderer();
+  window.renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
   window.camera = new THREE.PerspectiveCamera( 33, window.innerWidth / window.innerHeight, 1, 10000 );
@@ -17,13 +17,23 @@ function setThreeScene(){
 }
 
 function addParticle(){
-  const particle = new Particle('cc')
+  particle = new Particle(new THREE.Vector3( -150, -150, -150 ));
+  particle.accellerate(new THREE.Vector3( 10, 0, 0 ));
   particle.display()
 }
 
 function animate(){
+  particle.accellerate(gravity());
+  particle.move();
   render();
   requestAnimationFrame(animate);
+}
+
+function gravity(){
+  let distanceFromCenter = particle.sphere.position.distanceTo( new THREE.Vector3(0,0,0) );
+  let spaceBetween = new THREE.Vector3(0,0,0).sub( particle.sphere.position );
+  console.log(distanceFromCenter)
+  return spaceBetween.divideScalar(200)
 }
 
 function render () {
